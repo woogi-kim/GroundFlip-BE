@@ -46,6 +46,8 @@ public class Pixel {
 	@JoinColumn(name = "region_id")
 	private Region region;
 
+	private String geohash;
+
 	private LocalDateTime createdAt;
 
 	private LocalDateTime userOccupiedAt;
