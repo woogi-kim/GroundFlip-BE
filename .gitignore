@@ -9,6 +9,9 @@ build/
 
 aws.yml
 
+mysql_data/
+redis_data/
+
 ### STS ###
 .apt_generated
 .classpath
