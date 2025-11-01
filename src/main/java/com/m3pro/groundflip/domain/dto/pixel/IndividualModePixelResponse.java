@@ -21,4 +21,6 @@ public interface IndividualModePixelResponse {
 
 	@Schema(description = "픽셀 가로 상대 좌표", example = "210")
 	Integer getY();
+
+	String getGeohash();
 }

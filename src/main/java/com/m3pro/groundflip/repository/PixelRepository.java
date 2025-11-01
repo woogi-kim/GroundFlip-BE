@@ -23,18 +23,19 @@ public interface PixelRepository extends JpaRepository<Pixel, Long> {
 			ST_LONGITUDE(pixel.coordinate) AS longitude,
 			pixel.user_id AS userId,
 			pixel.x,
-			pixel.y
+			pixel.y,
+			pixel.geohash
 		FROM
 			pixel
 		WHERE
-			ST_CONTAINS((ST_Buffer(:center, :radius)), pixel.coordinate)
+		    pixel.geohash LIKE CONCAT(:geohash, '%')
 			AND pixel.user_id IS NOT NULL
 			AND pixel.user_occupied_at >= :weekStartDate
 		""", nativeQuery = true)
 	List<IndividualModePixelResponse> findAllIndividualModePixelsByCoordinate(
-		@Param("center") Point center,
-		@Param("radius") int radius,
-		@Param("weekStartDate") LocalDate weekStartDate);
+		@Param("geohash") String geohash,
+		@Param("weekStartDate") LocalDate weekStartDate
+	);
 
 	@Query(value = """
 		SELECT

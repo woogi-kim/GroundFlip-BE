@@ -34,6 +34,7 @@ import com.m3pro.groundflip.repository.PixelRepository;
 import com.m3pro.groundflip.repository.PixelUserRepository;
 import com.m3pro.groundflip.repository.UserRepository;
 import com.m3pro.groundflip.util.DateUtils;
+import com.m3pro.groundflip.util.GeoHashUtil;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -70,7 +71,10 @@ public class PixelReader {
 		Point point = geometryFactory.createPoint(new Coordinate(currentLongitude, currentLatitude));
 		point.setSRID(WGS84_SRID);
 		LocalDate thisWeekStartDate = DateUtils.getThisWeekStartDate();
-		return pixelRepository.findAllIndividualModePixelsByCoordinate(point, radius, thisWeekStartDate);
+
+		String boundingGeoHash = GeoHashUtil.getBoundingGeoHash(currentLatitude, currentLongitude, radius);
+
+		return pixelRepository.findAllIndividualModePixelsByCoordinate(boundingGeoHash, thisWeekStartDate);
 	}
 
 	public List<IndividualModePixelResponse> getNeaerIndividualModePixelsTest(
