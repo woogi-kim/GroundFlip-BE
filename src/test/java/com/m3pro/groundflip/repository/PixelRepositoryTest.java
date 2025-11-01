@@ -22,6 +22,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.m3pro.groundflip.domain.dto.pixel.IndividualModePixelResponse;
 import com.m3pro.groundflip.domain.entity.Pixel;
 import com.m3pro.groundflip.util.DateUtils;
+import com.m3pro.groundflip.util.GeoHashUtil;
 
 import jakarta.transaction.Transactional;
 
@@ -58,8 +59,8 @@ public class PixelRepositoryTest {
 
 		Point center = createPoint(CENTER_LONGITUDE, CENTER_LATITUDE);
 
-		List<IndividualModePixelResponse> result = pixelRepository.findAllIndividualModePixelsByCoordinate(center,
-			RADIUS, DateUtils.getThisWeekStartDate());
+		String boundingGeoHash = GeoHashUtil.getBoundingGeoHash(CENTER_LATITUDE, CENTER_LONGITUDE, RADIUS);
+		List<IndividualModePixelResponse> result = pixelRepository.findAllIndividualModePixelsByCoordinate(boundingGeoHash, DateUtils.getThisWeekStartDate());
 
 		assertThat(result.size()).isEqualTo(1);
 		assertThat(result.get(0).getPixelId()).isEqualTo(pixelInRange.getId());
